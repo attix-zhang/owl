@@ -1,0 +1,4 @@
+# The default inventory file for ansible to use.
+[dev]
+
+localhost ansible_connection=local

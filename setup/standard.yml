@@ -1,0 +1,17 @@
+---
+
+- hosts: dev
+
+  pre_tasks:
+    - name: "Check preconditions. Platform: MacOSX, Version: 10.14.5"
+      assert:
+          that:
+              - ansible_distribution == "MacOSX"
+              - ansible_distribution_version == "10.14.5"
+
+  post_tasks:
+      - name: "Display logout warning."
+        pause:
+            prompt: |
+                Finish the owl-setup.
+                You may need to restart the computer to enable all changes.
