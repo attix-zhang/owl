@@ -9,18 +9,8 @@
               - ansible_distribution == "MacOSX"
               - ansible_distribution_version == "10.14.5"
 
-    # Check the requirement for docker specified here: https://docs.docker.com/docker-for-mac/install/
-    - name: "Check kernel hv support."
-      command: "sysctl kern.hv_support"
-      register: check_output
-      failed_when: check_output.rc != 0
-      changed_when: false
-
-
-    - name: "Check system ram is larger than 4G"
-      assert:
-          that:
-                - ansible_memtotal_mb >= 4096
+  roles:
+      - docker
 
   post_tasks:
       - name: "Display logout warning."

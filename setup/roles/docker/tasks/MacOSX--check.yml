@@ -1,0 +1,20 @@
+---
+
+# Check the requirement for docker specified here: https://docs.docker.com/docker-for-mac/install/
+- name: "Check kernel hv support."
+  command: "sysctl kern.hv_support"
+  register: check_hv_output
+  failed_when: check_hv_output.rc != 0
+  changed_when: false
+
+- name: "Check system ram is larger than 4G"
+  assert:
+      that:
+            - ansible_memtotal_mb >= 4096
+
+- name: "Check there is no virtualbox lower than 4.3.30 installed"
+  shell: "virtualbox --help | head -n 1 | awk '{print $NF}' | sed -e 's/v//'"
+  register: check_vb_output
+  failed_when: check_vb_output.stdout == "" or check_vb_output.stdout is version('4.3.30', operator='le')
+  changed_when: false
+ 
