@@ -17,4 +17,16 @@
   register: check_vb_output
   failed_when: check_vb_output.stdout == "" or check_vb_output.stdout is version('4.3.30', operator='le')
   changed_when: false
- 
+
+# Check the legacy docker-machine environment.
+- name: "Check the legacy docker-machine environment variable."
+  fail:
+      msg: "Please `unset {{ docker_env_var }}` otherwise docker-for-mac can't be installed."
+  when: lookup('env', docker_env_var) != ''
+  with_items:
+      - DOCKER_HOST
+      - DOCKER_MACHINE_NAME
+      - DOCKER_TLS_VERIFY
+      - DOCKER_CERT_PATH
+  loop_control:
+      loop_var: docker_env_var
